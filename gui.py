@@ -1,7 +1,10 @@
 import PySimpleGUI as sg
+import time
 import threading
 from Node import Node
-layout = [[sg.Text("Balance: "), sg.Text(0)], [sg.Text('Reciever'), sg.InputText(), sg.Button("Send")], [
+node = Node()
+
+layout = [[sg.Text(node.wallet.pubkey)], [sg.Text("Balance: "), sg.Text(0)], [sg.Text('Reciever'), sg.InputText(), sg.Button("Send")], [
     sg.Button("Mine"), sg.Button("Stop Mining")
 ]]
 
@@ -10,25 +13,36 @@ window = sg.Window("BierCoin", layout)
 
 abort = False
 
+stop = False
 
-def threadtest():
-    for x in range(1, 10000):
+
+def mine():
+    while True:
         if abort:
-            break
-        print(x)
+            time.sleep(1)
+            if stop:
+                break
+            continue
+        node.start_mining()
 
 
 # Create an event loop
+x = threading.Thread(target=mine, args=())
+first_time = True
+
+
 while True:
     event, values = window.read()
 
     if event == "Mine":
         abort = False
-        x = threading.Thread(target=threadtest, args=())
-        x.start()
+        if first_time:
+            x.start()
+            first_time = False
     if event == "Stop Mining":
         abort = True
     if event == sg.WIN_CLOSED:
+        stop = True
         break
 
 window.close()

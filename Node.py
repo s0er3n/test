@@ -2,12 +2,7 @@
 # - Transaktion
 # - Hashbaum
 # - GUI
-# -
-#
-#
-#
-#
-#
+
 import time
 import hashlib
 from wallet import Wallet
@@ -64,13 +59,21 @@ class Node:
 
     wallet = Wallet()
 
+    def create_coinbase(self):
+        pass
+
+    def get_transactions(self):
+        global transactions
+        transactions = transactions.copy()
+        return transactions
+
     def start_mining(self):
-        while True:
-            transaction = input("Transaktion: ")
-            block = Block(transaction, hash(self.chain.chain[-1]))
-            block.mine()
-            self.chain.append(block.toDict())
-            print(self.chain.chain)
+        # transaction = input("Transaktion: ")
+
+        block = Block(self.get_transactions(), hash(self.chain.chain[-1]))
+        block.mine()
+        self.chain.append(block.toDict())
+        print(self.chain.chain)
 
 
 if __name__ == "__main___":
