@@ -13,6 +13,7 @@ class Wallet:
     # TODO search blockchain for unspent transactions and add it to balance
 
     def find_unspent(self):
+        pass
 
         # TODO Transaktion aussenden, damit Node sie zur Blockchain hinzufügen kann
 
