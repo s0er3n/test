@@ -10,7 +10,7 @@ layout = [[sg.Text(node.wallet.pubkey)], [sg.Text("Balance: "), sg.Text(0)], [sg
 
 # Create the window
 window = sg.Window("BierCoin", layout)
-
+#
 abort = False
 
 stop = False
@@ -23,6 +23,8 @@ def mine():
             if stop:
                 break
             continue
+        if stop:
+            break
         node.start_mining()
 
 

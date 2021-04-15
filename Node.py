@@ -1,17 +1,18 @@
 # Todo
 # - Transaktion
 # - Hashbaum
-# - GUI
 
 import time
 import hashlib
 from wallet import Wallet
+from Transaction import Transaction
+
 mining_dificulty = 4
 block_reward = 1
 
 transactions = []
 
-
+# TODO überall diese hashfunktion benutzen
 def hash(thingToHash):
     return str(hashlib.sha224(str(thingToHash).encode()).hexdigest())
 
@@ -26,7 +27,7 @@ class Block:
         self.hash = str(hashlib.sha224(
             str(self.toDict()).encode()).hexdigest())
 
-    def toDict(self):
+    def toDict(self):  # TODO Json
         """returns Dict of Values of Block"""
         return {
             "transactions": self.transactions,
@@ -39,7 +40,7 @@ class Block:
         while not self.hash.startswith("0" * mining_dificulty):
             self.nonce += 1
             self.hash = str(hashlib.sha224(
-                str(self.toDict()).encode()).hexdigest())
+                str(self.toDict()).encode()).hexdigest())  # TODO: lieber als json
         print(self.nonce, self.hash)
         return self.toDict()
 
@@ -53,19 +54,21 @@ class Chain:
         if hash(block).startswith("0" * mining_dificulty):
             self.chain.append(block)
 
+    # TODO stimmmen hashes von transaktionen und blöcke überein
+
 
 class Node:
     chain = Chain()
 
     wallet = Wallet()
+    # TODO macht vielleicht mehr sinn die funktion zum block hinzuzufügen
+    @property
+    def coinbase(self):
+        return str(Transaction(0.01, "COINBASE", "COINBASE", self.wallet.pubkey, "COINBASE"))
 
-    def create_coinbase(self):
-        pass
-
+    # TODO funktion um transaktionen auf zunehmen
     def get_transactions(self):
-        global transactions
-        transactions = transactions.copy()
-        return transactions
+        return [self.coinbase]
 
     def start_mining(self):
         # transaction = input("Transaktion: ")
