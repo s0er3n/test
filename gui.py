@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 import time
 import threading
-from biercoin.node import Node
+from biercoin.node.Node import Node
 node = Node()
 
 layout = [[sg.Text(node.wallet.pubkey)], [sg.Text("Balance: "), sg.Text(0)], [sg.Text('Reciever'), sg.InputText(), sg.Button("Send")], [

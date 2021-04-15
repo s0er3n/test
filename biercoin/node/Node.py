@@ -3,10 +3,11 @@
 # - Hashbaum
 
 import time
-import hashlib
 from biercoin.transaction.Transaction import Transaction
 from biercoin.wallet.Wallet import Wallet
 from biercoin.chain.Chain import Chain
+from biercoin.block.Block import Block
+from biercoin.util.functions import hash
 # from .util.functions import hash
 mining_dificulty = 4
 block_reward = 1
@@ -31,9 +32,10 @@ class Node:
     def start_mining(self):
         # transaction = input("Transaktion: ")
 
-        block = Block(self.get_transactions(), hash(self.chain.chain[-1]))
+        block = Block(self.get_transactions(), hash(self.chain.chain[-1].json))
+
         block.mine()
-        self.chain.append(block.toDict())
+        self.chain.append(block)
         print(self.chain.chain)
 
 
