@@ -1,5 +1,5 @@
 import rsa
-# from Transaction import Transaction
+from biercoin.transaction import Transaction
 
 
 class Wallet:
@@ -12,14 +12,25 @@ class Wallet:
 
     # TODO search blockchain for unspent transactions and add it to balance
 
-    def find_unspent(self):
-        pass
+    def find_unspent(self, chain):
+        balance = 0
+        for block in chain:
+            # print(block.transactions)
+            if block.transactions != "genisis":
+                for transaction in block.transactions:
+                    # print(transaction)
+                    if transaction.output_hash["n"] == self.pubkey["n"] and transaction.output_hash["e"] == self.pubkey["e"]:
+                        balance += transaction.amt
+                    if not transaction.input_hash == "COINBASE" and transaction.input_hash["n"] == self.pubkey["n"] and transaction.input_hash["e"] == self.pubkey["e"]:
+                        balance -= transaction.amt
+        return balance
 
         # TODO Transaktion aussenden, damit Node sie zur Blockchain hinzufügen kann
 
-    def send_out_transaction(self):
-        pass
-        # main.transaction.append(self.make_transaktion())
+    def send_out_transaction(self, output):
+        t = Transaction(1, self.wallet.pubkey, "tobefilled",
+                        output, "sign")  # FIXME: HASH and SIGN
+        add_transaction(self.make_transaktion())
 
         # tests
 

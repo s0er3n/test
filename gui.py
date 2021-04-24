@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 import time
 import threading
 from biercoin.node.Node import Node
+
 node = Node()
 
 layout = [[sg.Text(node.wallet.pubkey)], [sg.Text("Balance: "), sg.Text(0)], [sg.Text('Reciever'), sg.InputText(), sg.Button("Send")], [
@@ -41,6 +42,8 @@ while True:
         if first_time:
             x.start()
             first_time = False
+    if event == "Send":
+        node.wallet.send_out_transaction("TEST")
     if event == "Stop Mining":
         abort = True
     if event == sg.WIN_CLOSED:

@@ -1,8 +1,9 @@
 # Todo
 # - Transaktion
 # - Hashbaum
-
+import copy
 import time
+import json
 from biercoin.transaction.Transaction import Transaction
 from biercoin.wallet.Wallet import Wallet
 from biercoin.chain.Chain import Chain
@@ -13,7 +14,10 @@ mining_dificulty = 4
 block_reward = 1
 
 # TODO Später sollte das hier aus dem Netzwerk empfangen werden
-transactions = []
+
+
+
+
 
 
 class Node:
@@ -21,13 +25,14 @@ class Node:
     wallet = Wallet()
     # TODO macht vielleicht mehr sinn die funktion zum block hinzuzufügen
 
+    # FIXME: Die FUNKTION wird nciht benutzt?
     @property
     def coinbase(self):
-        return str(Transaction(0.01, "COINBASE", "COINBASE", self.wallet.pubkey, "COINBASE"))
+        return Transaction(1, "COINBASE", "COINBASE", {"n": self.wallet.pubkey.n, "e": self.wallet.pubkey.e}, "COINBASE")
 
     # TODO funktion um transaktionen auf zunehmen
     def get_transactions(self):
-        return [self.coinbase]
+        return [self.coinbase].append(get_transactions())
 
     def start_mining(self):
         # transaction = input("Transaktion: ")
@@ -36,7 +41,8 @@ class Node:
 
         block.mine()
         self.chain.append(block)
-        print(self.chain.chain)
+        print(self.wallet.find_unspent(self.chain.chain))
+        # print(self.chain.chain)
 
 
 if __name__ == "__main___":

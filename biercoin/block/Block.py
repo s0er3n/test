@@ -13,8 +13,8 @@ class Block:
         self.timestamp = time.time()
         self.nonce = 0
         self.hash = hash(self.json)
-
     def toDict(self):  # TODO Json
+
         """returns Dict of Values of Block"""
         return {
             "transactions": self.transactions,
